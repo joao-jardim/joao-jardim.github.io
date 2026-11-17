@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>João Victor Jardim</title>
+<meta name="description" content="João Victor Jardim — computer science student at UFOP working on optimization, operations research and applied research for industry.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDF1EF;
+  --paper-2:#E1E8E5;
+  --ink:#1A2422;
+  --slate:#4F5F5B;
+  --line:#C3CFCB;
+  --verdigris:#23806F;
+  --pyrite:#B8901C;
+  --contour:rgba(35,128,111,.30);
+  --contour-strong:rgba(35,128,111,.55);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141B1A; --paper-2:#1C2523; --ink:#E4ECE9; --slate:#9DB0AB; --line:#2E3B38;
+    --verdigris:#5CC2AE; --pyrite:#E2B940; --contour:rgba(92,194,174,.22); --contour-strong:rgba(92,194,174,.45);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141B1A; --paper-2:#1C2523; --ink:#E4ECE9; --slate:#9DB0AB; --line:#2E3B38;
+  --verdigris:#5CC2AE; --pyrite:#E2B940; --contour:rgba(92,194,174,.22); --contour-strong:rgba(92,194,174,.45);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Archivo",system-ui,sans-serif; font-variation-settings:"wdth" 100;
+  font-size:1.0625rem; line-height:1.6;
+}
+a{color:var(--verdigris); text-underline-offset:.18em; text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--pyrite); outline-offset:3px; border-radius:2px}
+.wrap{max-width:68rem; margin:0 auto; padding:0 1.25rem}
+
+/* top bar */
+.bar{display:flex; justify-content:space-between; align-items:center; padding:1.25rem 0; gap:1rem}
+.bar .me{font-weight:600; font-variation-settings:"wdth" 112; text-decoration:none; color:var(--ink)}
+.bar nav{display:flex; gap:1.1rem; flex-wrap:wrap; align-items:center; font-size:.95rem}
+.bar nav a{color:var(--slate); text-decoration:none}
+.bar nav a:hover{color:var(--ink)}
+@media (max-width:560px){ .bar nav a{display:none} }
+.toggle{
+  font:inherit; font-size:.9rem; color:var(--ink); background:transparent;
+  border:1px solid var(--line); border-radius:999px; padding:.25rem .75rem; cursor:pointer;
+}
+.toggle:hover{border-color:var(--slate)}
+
+/* hero */
+.hero{display:grid; grid-template-columns:minmax(0,1fr); gap:1.5rem; padding:2rem 0 3rem}
+.hero h1{
+  margin:0; font-weight:780; font-variation-settings:"wdth" 125;
+  font-size:clamp(2.6rem, 7.5vw, 5.6rem); line-height:.95; letter-spacing:-.02em;
+}
+.hero .lede{max-width:38rem; font-size:clamp(1.1rem,2vw,1.3rem); color:var(--slate); margin:0}
+.field{
+  position:relative; border-radius:6px; overflow:hidden;
+  background:var(--paper-2); aspect-ratio:16/7; min-height:240px;
+}
+.field canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
+.readout{
+  position:absolute; left:1rem; bottom:.9rem; display:flex; gap:1.25rem;
+  font-size:.85rem; color:var(--slate); font-variant-numeric:tabular-nums;
+  background:color-mix(in srgb, var(--paper) 82%, transparent); padding:.35rem .7rem; border-radius:4px;
+}
+.readout b{color:var(--ink); font-weight:600}
+.caption{font-size:.92rem; color:var(--slate); max-width:40rem; margin:.6rem 0 0}
+.replay{font:inherit; font-size:.9rem; background:none; border:none; color:var(--verdigris); cursor:pointer; padding:0; text-decoration:underline; text-underline-offset:.18em}
+
+/* sections */
+section{padding:3.25rem 0; border-top:1px solid var(--line)}
+h2{
+  margin:0 0 1.75rem; font-weight:700; font-variation-settings:"wdth" 118;
+  font-size:clamp(1.6rem,3.4vw,2.3rem); letter-spacing:-.01em; line-height:1.1;
+}
+h3{margin:0; font-size:1.15rem; font-weight:650; line-height:1.3}
+.split{display:grid; grid-template-columns:minmax(0,1fr); gap:2rem}
+@media (min-width:860px){ .split{grid-template-columns:15rem minmax(0,1fr); gap:3rem} .split>h2{margin:0} }
+.prose{max-width:40rem}
+.prose p{margin:0 0 1rem}
+.muted{color:var(--slate)}
+
+/* research entries */
+.entry{padding:0 0 2rem}
+.entry + .entry{padding-top:2rem; border-top:1px dashed var(--line)}
+.entry .when{color:var(--slate); font-size:.92rem; margin:.15rem 0 .7rem}
+.entry ul{margin:.4rem 0 0; padding-left:1.1rem; max-width:42rem}
+.entry li{margin:.3rem 0}
+.pubs{margin-top:.9rem; padding-left:.9rem; border-left:3px solid var(--verdigris); max-width:42rem}
+.pubs p{margin:.35rem 0; font-size:.95rem}
+.pubs em{font-style:italic}
+
+/* project list */
+.group{margin:0 0 2.25rem}
+.group h3{
+  font-size:1rem; color:var(--verdigris); font-weight:650; margin-bottom:.4rem;
+}
+.proj{display:grid; grid-template-columns:minmax(0,1fr); gap:.2rem .5rem; padding:.9rem 0; border-top:1px solid var(--line)}
+.proj:last-child{border-bottom:1px solid var(--line)}
+.proj .name{font-weight:620; color:var(--ink)}
+a.name{text-decoration-color:var(--verdigris)}
+.proj .what{margin:0; color:var(--slate); max-width:44rem}
+.proj .stack{font-size:.9rem; color:var(--ink); opacity:.8}
+@media (min-width:860px){
+  .proj{grid-template-columns:16rem minmax(0,1fr) 12rem; align-items:baseline}
+  .proj .stack{text-align:right}
+}
+
+/* abroad */
+.facts{display:grid; grid-template-columns:minmax(0,1fr); gap:1.5rem 2.5rem; margin-top:1.5rem; max-width:44rem}
+@media (min-width:640px){ .facts{grid-template-columns:1fr 1fr} }
+.facts div h3{font-size:1rem; margin-bottom:.3rem}
+.facts div p{margin:0; color:var(--slate); font-size:.97rem}
+
+/* education */
+.edu{display:grid; grid-template-columns:minmax(0,1fr); gap:1rem 3rem}
+@media (min-width:860px){ .edu{grid-template-columns:1fr 1fr} }
+.edu ul{list-style:none; margin:0; padding:0}
+.edu li{padding:.55rem 0; border-top:1px solid var(--line)}
+.edu li span{display:block; color:var(--slate); font-size:.92rem}
+
+/* contact */
+.contact h2{font-variation-settings:"wdth" 125; font-size:clamp(2rem,5vw,3.4rem)}
+.contact .links{display:flex; flex-wrap:wrap; gap:1rem 2rem; font-size:1.15rem}
+footer{padding:2rem 0 3rem; color:var(--slate); font-size:.9rem}
+
+@media (prefers-reduced-motion: reduce){ *{scroll-behavior:auto!important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="bar">
+    <a class="me" href="#top">João Victor Jardim</a>
+    <nav aria-label="Sections">
+      <a href="#research" data-i18n="nav.research">Research</a>
+      <a href="#projects" data-i18n="nav.projects">Projects</a>
+      <a href="#abroad" data-i18n="nav.abroad">Austria</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
+      <button class="toggle" id="lang" type="button" aria-label="Mudar para português">PT</button>
+      <button class="toggle" id="theme" type="button" aria-label="Toggle dark mode" data-i18n-aria="theme.aria">◐</button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="hero">
+      <h1>João Victor<br>Jardim</h1>
+      <p class="lede" data-i18n="hero.lede">Computer science student at UFOP. I turn real-world problems (classrooms, ore piles, delivery routes) into models a computer can solve, and I like building the software around them.</p>
+      <figure style="margin:0">
+        <div class="field">
+          <canvas id="landscape" aria-hidden="true"></canvas>
+          <div class="readout" aria-live="off">
+            <span><span data-i18n="ro.temp">Temperature</span> <b id="ro-t">—</b></span>
+            <span><span data-i18n="ro.best">Best cost</span> <b id="ro-b">—</b></span>
+          </div>
+        </div>
+        <figcaption class="caption">
+          <span data-i18n="hero.caption">Simulated annealing searching a cost surface for its lowest point, live in your browser. Most of my work is some version of this.</span>
+          <button class="replay" id="replay" type="button" data-i18n="hero.replay">Run again</button>
+        </figcaption>
+      </figure>
+    </div>
+
+    <section class="split" aria-labelledby="about-h">
+      <h2 id="about-h" data-i18n="about.h">About</h2>
+      <div class="prose">
+        <p data-i18n="about.p1">I'm from Belo Horizonte, Brazil, and I study Computer Science at the Federal University of Ouro Preto (UFOP), graduating in December 2027. Before that I trained as a chemistry technician at Coltec/UFMG, which is where I picked up my habit of following procedures carefully.</p>
+        <p data-i18n="about.p2">I don't settle for knowing how to do something. I want to understand how it works, who it's for and why it matters. That curiosity took me into two research projects, a semester at Montanuniversität Leoben in Austria, and a freelance job I had never done before and learned from scratch.</p>
+        <p data-i18n="about.p3">Right now I'm most interested in optimization, data and information security.</p>
+      </div>
+    </section>
+
+    <section id="research" class="split" aria-labelledby="research-h">
+      <h2 id="research-h" data-i18n="research.h">Research</h2>
+      <div>
+        <article class="entry">
+          <h3 data-i18n="r1.t">Optimization for classroom allocation</h3>
+          <p class="when" data-i18n="r1.w">GOAL – Group of Optimization and Algorithms, UFOP · 2025–2026 · undergraduate thesis</p>
+          <ul>
+            <li data-i18n="r1.a">Structured real institutional data on classes and rooms and wrote the mathematical model of the problem.</li>
+            <li data-i18n="r1.b">Built constructive heuristics, local search and simulated annealing in C++, with a cost function that weighs room capacity, preferences and scheduling constraints.</li>
+          </ul>
+        </article>
+        <article class="entry">
+          <h3 data-i18n="r2.t">Virtual reality and brain–computer interfaces for the mining industry</h3>
+          <p class="when" data-i18n="r2.w">XR4GOOD Lab, UFOP · 2024–2025 · PIBITI research grant</p>
+          <ul>
+            <li data-i18n="r2.a">Built a VR simulator of ore-wagon loading in Unity/C#, controlled through an 8-channel EEG headset (code-modulated visual evoked potentials) on a Meta Quest Pro.</li>
+            <li data-i18n="r2.b">Ran the study with 26 participants and analysed it with SUS, TAM and ANOVA: usability scored 77 (the acceptable threshold is 68), and prior VR experience changed how people rated the system.</li>
+          </ul>
+          <div class="pubs">
+            <p><em>Towards a VR-BCI Based System to Evaluate the Effectiveness of Immersive Technologies in Industry.</em> ICEIS 2025. <a href="https://doi.org/10.5220/0013483800003929">doi:10.5220/0013483800003929</a></p>
+            <p><em>Would You Mind? Evaluating User Acceptance and Usability of a Brain-Interface System in an Industrial Scenario.</em> SVR 2025. <a href="https://doi.org/10.1109/SVR67689.2025.00046">doi:10.1109/SVR67689.2025.00046</a></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-h">
+      <h2 id="projects-h" data-i18n="projects.h">Projects</h2>
+
+      <div class="group">
+        <h3 data-i18n="g1">Optimization and operations research</h3>
+        <div class="proj"><a class="name" href="https://github.com/joao-jardim/TP_otimizacao" data-i18n="p1.n">Fleet routing</a><p class="what" data-i18n="p1.d">Mixed-integer model that minimizes makespan, with subtour elimination, flow conservation and time synchronization between trucks and forklifts.</p><span class="stack">C++ · IBM ILOG CPLEX</span></div>
+        <div class="proj"><a class="name" href="https://github.com/joao-jardim/cplex_cpp" data-i18n="p2.n">Ore blending</a><p class="what" data-i18n="p2.d">Three linear programs that decide how much to take from each ore pile at minimum cost while meeting iron, silica and alumina targets, including relaxed and goal-programming versions for infeasible cases.</p><span class="stack">C++ · IBM ILOG CPLEX</span></div>
+        <div class="proj"><a class="name" href="https://github.com/joao-jardim/tp-metaheuristicas" data-i18n="p3.n">Room allocation metaheuristics</a><p class="what" data-i18n="p3.d">Greedy and randomized (RCL) construction, best-improvement hill climbing over five neighbourhoods, and a hybrid simulated annealing with convergence logging.</p><span class="stack">C++17 · Python</span></div>
+        <div class="proj"><a class="name" href="https://github.com/joao-jardim/problema-da-mochila" data-i18n="p4.n">Two-constraint 0-1 knapsack</a><p class="what" data-i18n="p4.d">Backtracking, branch and bound and 3D dynamic programming, compared with an automated benchmark and a Friedman test.</p><span class="stack">C++ · pandas · SciPy</span></div>
+        <div class="proj"><a class="name" href="https://github.com/joao-jardim/tp_comp.evolutiva" data-i18n="p5.n">Genetic algorithm for the CVRP</a><p class="what" data-i18n="p5.d">Evolutionary approach to the capacitated vehicle routing problem.</p><span class="stack" data-i18n="p5.s">Evolutionary computing</span></div>
+      </div>
+
+      <div class="group">
+        <h3 data-i18n="g2">Systems, networks and security</h3>
+        <div class="proj"><span class="name" data-i18n="p6.n">Voting-based container cluster</span><p class="what" data-i18n="p6.d">Five containers that act as client and server at once and vote over sockets so only one writes to a shared file at a time.</p><span class="stack">Python · Docker Compose</span></div>
+        <div class="proj"><span class="name" data-i18n="p7.n">Cryptography lab image</span><p class="what" data-i18n="p7.d">Ubuntu image published on Docker Hub with OpenSSL: RSA key pairs, SHA-256 hashing, encryption and decryption.</p><span class="stack">Linux · OpenSSL · Docker</span></div>
+        <div class="proj"><span class="name" data-i18n="p8.n">Class-wide alerts on AWS</span><p class="what" data-i18n="p8.d">Distributed notification system that emails every student in a course, later extended with containerized services.</p><span class="stack">AWS SNS</span></div>
+        <div class="proj"><span class="name" data-i18n="p9.n">Networked poker</span><p class="what" data-i18n="p9.d">Client–server poker game for several players over sockets.</p><span class="stack">Python</span></div>
+        <div class="proj"><span class="name" data-i18n="p10.n">Compiler front end</span><p class="what" data-i18n="p10.d">Lexical, syntactic and semantic analysis built in pairs.</p><span class="stack">Haskell · Alex · Happy</span></div>
+      </div>
+
+      <div class="group">
+        <h3 data-i18n="g3">Software</h3>
+        <div class="proj"><span class="name" data-i18n="p11.n">Classroom management system</span><p class="what" data-i18n="p11.d">Desktop app with a full GUI to register, search, edit and report on students, teachers, courses and rooms, with manager login. Team of five.</p><span class="stack">Java</span></div>
+        <div class="proj"><span class="name">MarketFlow</span><p class="what" data-i18n="p12.d">Requirements, ER model and backlog for a grocery-store inventory system, delivered in Scrum sprints.</p><span class="stack">Scrum · Kanban</span></div>
+        <div class="proj"><span class="name" data-i18n="p13.n">Legacy website rescue</span><p class="what" data-i18n="p13.d">Freelance (2026–now): took over a client's production site he could no longer touch, set up staging, DNS, SSL and SFTP, and kept every record intact.</p><span class="stack">WordPress · PHP · MySQL</span></div>
+      </div>
+    </section>
+
+    <section id="abroad" class="split" aria-labelledby="abroad-h">
+      <h2 id="abroad-h" data-i18n="abroad.h">A semester in Austria</h2>
+      <div>
+        <div class="prose">
+          <p data-i18n="abroad.p">From February to July 2026 I studied at Montanuniversität Leoben, a university known for mining and metallurgy, taking every course in English with a focus on logistics, supply chain and business.</p>
+        </div>
+        <div class="facts">
+          <div><h3 data-i18n="f1.h">Logistics paper</h3><p data-i18n="f1.p">Wrote and presented "Optimization Algorithms in Logistics", a critical review of exact methods and metaheuristics for routing and distribution.</p></div>
+          <div><h3 data-i18n="f2.h">Supply chain cases</h3><p data-i18n="f2.p">Supplier diversification, just-in-time and green logistics; presented a 4PL case on emissions, modal shift and returnable packaging.</p></div>
+          <div><h3 data-i18n="f3.h">Investor pitch</h3><p data-i18n="f3.p">Built EurAçaí with a team: an end-to-end supply chain from the Amazon to European supermarkets, with business model and market sizing.</p></div>
+          <div><h3 data-i18n="f4.h">Also studied</h3><p data-i18n="f4.p">Operations Research, Artificial Intelligence, Technology and Innovation Management, HR Management. Sang tenor in the university choir.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="split" aria-labelledby="edu-h">
+      <h2 id="edu-h" data-i18n="edu.h">Education and courses</h2>
+      <div class="edu">
+        <ul>
+          <li data-i18n-html="e1">B.Sc. Computer Science, UFOP<span>2022 – 2027 (expected)</span></li>
+          <li data-i18n-html="e2">Exchange semester, Montanuniversität Leoben<span>2026</span></li>
+          <li data-i18n-html="e3">Chemistry technician, Coltec/UFMG<span>2018 – 2021</span></li>
+          <li data-i18n-html="e4">English C1 Advanced, EF SET<span>2025</span></li>
+        </ul>
+        <ul>
+          <li data-i18n-html="c1">Basic and advanced C++ programming, Udemy<span>2025 · 20.5 h</span></li>
+          <li data-i18n-html="c2">SQL for data analysis, Udemy<span>2025</span></li>
+          <li data-i18n-html="c3">Signal processing (Python) for neuroscience, Udemy<span>2025</span></li>
+          <li data-i18n-html="c4">Santander Acceleration: Cybersecurity from zero to practice<span>2026</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="contact" class="contact" aria-labelledby="contact-h">
+      <h2 id="contact-h" data-i18n="contact.h">Let's talk</h2>
+      <p class="prose muted" data-i18n="contact.p">I'm looking for internships and trainee programs in optimization, data, software and security.</p>
+      <div class="links">
+        <a href="mailto:victorjoaojardim@gmail.com">victorjoaojardim@gmail.com</a>
+        <a href="https://github.com/joao-jardim">github.com/joao-jardim</a>
+      </div>
+    </section>
+  </main>
+
+  <footer data-i18n="footer">Built by hand with HTML, CSS and a little JavaScript. Hosted on GitHub Pages.</footer>
+</div>
+
+<script>
+/* ---------- translations ---------- */
+const PT = {
+  "nav.research":"Pesquisa","nav.projects":"Projetos","nav.abroad":"Áustria","nav.contact":"Contato",
+  "theme.aria":"Alternar modo escuro",
+  "hero.lede":"Estudante de Ciência da Computação na UFOP. Transformo problemas do mundo real (salas de aula, pilhas de minério, rotas de entrega) em modelos que um computador consegue resolver, e gosto de construir o software em volta deles.",
+  "ro.temp":"Temperatura","ro.best":"Melhor custo",
+  "hero.caption":"Simulated annealing procurando o ponto mais baixo de uma superfície de custo, ao vivo no seu navegador. Quase todo o meu trabalho é alguma versão disso.",
+  "hero.replay":"Rodar de novo",
+  "about.h":"Sobre",
+  "about.p1":"Sou de Belo Horizonte e curso Ciência da Computação na Universidade Federal de Ouro Preto (UFOP), com formatura prevista para dezembro de 2027. Antes, me formei técnico em Química no Coltec/UFMG, onde aprendi a seguir procedimentos com rigor.",
+  "about.p2":"Não me contento em saber fazer: quero entender como funciona, para quem é e por que importa. Essa curiosidade me levou a duas iniciações científicas, a um semestre na Montanuniversität Leoben, na Áustria, e a um freela que eu nunca tinha feito e aprendi do zero.",
+  "about.p3":"Hoje me interesso principalmente por otimização, dados e segurança da informação.",
+  "research.h":"Pesquisa",
+  "r1.t":"Otimização para alocação de salas",
+  "r1.w":"GOAL – Group of Optimization and Algorithms, UFOP · 2025–2026 · TCC",
+  "r1.a":"Estruturei dados institucionais reais de turmas e salas e escrevi o modelo matemático do problema.",
+  "r1.b":"Implementei em C++ heurísticas construtivas, busca local e simulated annealing, com uma função de custo que pondera capacidade, preferências e restrições de horário.",
+  "r2.t":"Realidade virtual e interface cérebro-computador para a mineração",
+  "r2.w":"Laboratório XR4GOOD, UFOP · 2024–2025 · bolsa PIBITI",
+  "r2.a":"Desenvolvi em Unity/C# um simulador em VR de carregamento de vagões de minério, controlado por um EEG de 8 canais (potenciais evocados visuais modulados por código) em um Meta Quest Pro.",
+  "r2.b":"Conduzi o estudo com 26 participantes e analisei com SUS, TAM e ANOVA: usabilidade de 77 (o limiar aceitável é 68), e a experiência prévia com VR mudou a avaliação do sistema.",
+  "projects.h":"Projetos",
+  "g1":"Otimização e pesquisa operacional",
+  "p1.n":"Roteamento de frota","p1.d":"Modelo de programação inteira mista que minimiza o makespan, com eliminação de sub-rotas, conservação de fluxo e sincronização entre caminhões e empilhadeiras.",
+  "p2.n":"Mistura de minérios","p2.d":"Três programas lineares que decidem quanto retirar de cada pilha com custo mínimo, respeitando metas de ferro, sílica e alumina, incluindo versões com relaxação e com metas para casos inviáveis.",
+  "p3.n":"Metaheurísticas para alocação de salas","p3.d":"Construção gulosa e aleatorizada (RCL), hill climbing com melhor melhoria em cinco vizinhanças e simulated annealing híbrido com registro de convergência.",
+  "p4.n":"Mochila 0-1 com duas restrições","p4.d":"Backtracking, branch and bound e programação dinâmica 3D, comparados com benchmark automatizado e teste de Friedman.",
+  "p5.n":"Algoritmo genético para o CVRP","p5.d":"Abordagem evolutiva para o problema de roteamento de veículos com capacidade.","p5.s":"Computação evolucionária",
+  "g2":"Sistemas, redes e segurança",
+  "p6.n":"Cluster de containers com votação","p6.d":"Cinco containers que atuam como cliente e servidor ao mesmo tempo e votam por sockets para que só um escreva num arquivo compartilhado por vez.",
+  "p7.n":"Imagem de laboratório de criptografia","p7.d":"Imagem Ubuntu publicada no Docker Hub com OpenSSL: pares de chaves RSA, hash SHA-256, cifragem e decifragem.",
+  "p8.n":"Alertas para a turma na AWS","p8.d":"Sistema de notificação distribuído que envia e-mail para todos os alunos da disciplina, depois estendido com serviços em containers.",
+  "p9.n":"Poker em rede","p9.d":"Jogo de poker cliente-servidor para vários jogadores via sockets.",
+  "p10.n":"Front-end de compilador","p10.d":"Análise léxica, sintática e semântica, desenvolvida em dupla.",
+  "g3":"Software",
+  "p11.n":"Sistema de gestão de salas","p11.d":"Aplicação desktop com interface gráfica completa para cadastrar, buscar, editar e gerar relatórios de alunos, professores, cursos e salas, com login de gestor. Equipe de cinco.",
+  "p12.d":"Requisitos, modelo ER e backlog de um sistema de estoque para mercado, entregues em sprints com Scrum.",
+  "p13.n":"Resgate de site legado","p13.d":"Freela (2026–hoje): assumi o site em produção de um cliente que ele não conseguia mais mexer, montei staging, DNS, SSL e SFTP, e mantive todos os dados intactos.",
+  "abroad.h":"Um semestre na Áustria",
+  "abroad.p":"De fevereiro a julho de 2026 estudei na Montanuniversität Leoben, universidade conhecida por mineração e metalurgia, com todas as disciplinas em inglês e foco em logística, supply chain e negócios.",
+  "f1.h":"Artigo de logística","f1.p":"Escrevi e apresentei \"Optimization Algorithms in Logistics\", uma revisão crítica de métodos exatos e metaheurísticas para roteirização e distribuição.",
+  "f2.h":"Cases de supply chain","f2.p":"Diversificação de fornecedores, just-in-time e logística verde; apresentei o case de um 4PL sobre emissões, mudança de modal e embalagens retornáveis.",
+  "f3.h":"Pitch para investidores","f3.p":"Construí em equipe a EurAçaí: uma cadeia de ponta a ponta da Amazônia a supermercados europeus, com modelo de negócio e tamanho de mercado.",
+  "f4.h":"Também cursei","f4.p":"Operations Research, Inteligência Artificial, Gestão de Tecnologia e Inovação e Gestão de Pessoas. Cantei como tenor no coral da universidade.",
+  "edu.h":"Formação e cursos",
+  "e1":"Bacharelado em Ciência da Computação, UFOP<span>2022 – 2027 (previsão)</span>",
+  "e2":"Intercâmbio, Montanuniversität Leoben<span>2026</span>",
+  "e3":"Técnico em Química, Coltec/UFMG<span>2018 – 2021</span>",
+  "e4":"Inglês C1 Advanced, EF SET<span>2025</span>",
+  "c1":"Programação básica e avançada em C++, Udemy<span>2025 · 20,5 h</span>",
+  "c2":"SQL para análise de dados, Udemy<span>2025</span>",
+  "c3":"Processamento de sinais (Python) para neurociência, Udemy<span>2025</span>",
+  "c4":"Aceleração Santander: Cibersegurança do zero à prática<span>2026</span>",
+  "contact.h":"Vamos conversar",
+  "contact.p":"Busco estágios e programas de trainee em otimização, dados, software e segurança.",
+  "footer":"Feito à mão com HTML, CSS e um pouco de JavaScript. Hospedado no GitHub Pages."
+};
+const EN = {};
+document.querySelectorAll("[data-i18n]").forEach(el=>EN[el.dataset.i18n]=el.textContent);
+document.querySelectorAll("[data-i18n-html]").forEach(el=>EN[el.dataset.i18nHtml]=el.innerHTML);
+document.querySelectorAll("[data-i18n-aria]").forEach(el=>EN[el.dataset.i18nAria]=el.getAttribute("aria-label"));
+
+function store(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function read(k){try{return localStorage.getItem(k)}catch(e){return null}}
+
+let lang = read("lang") || ((navigator.language||"").toLowerCase().startsWith("pt") ? "pt" : "en");
+function applyLang(l){
+  const dict = l==="pt" ? PT : EN;
+  document.documentElement.lang = l==="pt" ? "pt-BR" : "en";
+  document.querySelectorAll("[data-i18n]").forEach(el=>{ const v=dict[el.dataset.i18n]; if(v!=null) el.textContent=v; });
+  document.querySelectorAll("[data-i18n-html]").forEach(el=>{ const v=dict[el.dataset.i18nHtml]; if(v!=null) el.innerHTML=v; });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el=>{ const v=dict[el.dataset.i18nAria]; if(v!=null) el.setAttribute("aria-label",v); });
+  const b=document.getElementById("lang");
+  b.textContent = l==="pt" ? "EN" : "PT";
+  b.setAttribute("aria-label", l==="pt" ? "Switch to English" : "Mudar para português");
+}
+applyLang(lang);
+document.getElementById("lang").addEventListener("click",()=>{ lang = lang==="pt"?"en":"pt"; store("lang",lang); applyLang(lang); });
+
+const saved = read("theme"); if(saved) document.documentElement.dataset.theme = saved;
+document.getElementById("theme").addEventListener("click",()=>{
+  const dark = document.documentElement.dataset.theme
+    ? document.documentElement.dataset.theme==="dark"
+    : matchMedia("(prefers-color-scheme: dark)").matches;
+  const next = dark ? "light" : "dark";
+  document.documentElement.dataset.theme = next; store("theme",next); drawField();
+});
+
+/* ---------- cost landscape + simulated annealing ---------- */
+const cv = document.getElementById("landscape");
+const ctx = cv.getContext("2d");
+const base = document.createElement("canvas");
+const bctx = base.getContext("2d");
+let W=0,H=0,dpr=1, wells=[], run=null;
+
+function rand(a,b){return a+Math.random()*(b-a)}
+function makeWells(){
+  wells=[];
+  const n=13;
+  for(let i=0;i<n;i++) wells.push({x:rand(.03,.97), y:rand(.05,.95), s:rand(.05,.12), d:rand(.35,.8)});
+  wells[0].d=1.0; wells[0].s=.08; // one clearly best basin
+}
+function f(x,y){ // cost: lower is better, roughly 0..1
+  let v=1;
+  for(const w of wells){ const dx=x-w.x, dy=(y-w.y)*(H/W||.44); v-=w.d*Math.exp(-(dx*dx+dy*dy)/(2*w.s*w.s))*.55; }
+  v+=.025*Math.sin(x*17+wells[1].x*9)*Math.cos(y*13+wells[2].y*7);
+  return v;
+}
+function css(name){return getComputedStyle(document.documentElement).getPropertyValue(name).trim()}
+
+function drawField(){
+  const r=cv.getBoundingClientRect(); dpr=Math.min(2,window.devicePixelRatio||1);
+  W=r.width; H=r.height; if(!W||!H) return;
+  cv.width=base.width=Math.round(W*dpr); cv.height=base.height=Math.round(H*dpr);
+  const step=2, gw=Math.ceil(W/step), gh=Math.ceil(H/step);
+  const img=bctx.createImageData(base.width,base.height);
+  const c1=parseColor(css("--contour")), c2=parseColor(css("--contour-strong"));
+  const levels=22;
+  const g=new Float32Array((gw+1)*(gh+1));
+  for(let j=0;j<=gh;j++) for(let i=0;i<=gw;i++) g[j*(gw+1)+i]=f(i*step/W, j*step/H);
+  for(let py=0;py<base.height;py++){
+    const y=py/dpr/step, j=Math.min(gh-1,Math.floor(y)), ty=y-j;
+    for(let px=0;px<base.width;px++){
+      const x=px/dpr/step, i=Math.min(gw-1,Math.floor(x)), tx=x-i;
+      const a=g[j*(gw+1)+i], b=g[j*(gw+1)+i+1], c=g[(j+1)*(gw+1)+i], d=g[(j+1)*(gw+1)+i+1];
+      const v=(a*(1-tx)+b*tx)*(1-ty)+(c*(1-tx)+d*tx)*ty;
+      const t=v*levels, fr=t-Math.floor(t);
+      const gx=Math.abs(b-a), gy=Math.abs(c-a), grad=(gx+gy)*levels*1.6+1e-4;
+      const dist=Math.min(fr,1-fr)/grad;
+      if(dist<.55){
+        const major=(Math.floor(t+.5)%5===0), col=major?c2:c1, k=1-dist/.55, o=(py*base.width+px)*4;
+        img.data[o]=col[0]; img.data[o+1]=col[1]; img.data[o+2]=col[2]; img.data[o+3]=col[3]*255*k;
+      }
+    }
+  }
+  bctx.putImageData(img,0,0);
+  ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,cv.width,cv.height); ctx.drawImage(base,0,0);
+  if(run) drawRun(run);
+}
+function parseColor(s){
+  const m=s.match(/rgba?\(([^)]+)\)/); if(m){const p=m[1].split(",").map(Number); return [p[0],p[1],p[2],p[3]??1];}
+  const h=s.replace("#",""); return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16),1];
+}
+
+function newRun(){
+  const x=rand(.05,.95), y=rand(.1,.9);
+  return {x,y,c:f(x,y),bx:x,by:y,bc:f(x,y),T:1,trail:[[x,y]],done:false};
+}
+function stepRun(r,n){
+  for(let k=0;k<n && !r.done;k++){
+    const s=.008+.09*r.T;
+    let nx=Math.min(.99,Math.max(.01,r.x+rand(-s,s))), ny=Math.min(.98,Math.max(.02,r.y+rand(-s,s)));
+    const nc=f(nx,ny), dE=nc-r.c;
+    if(dE<0 || Math.random()<Math.exp(-dE/(r.T*.08))){ r.x=nx; r.y=ny; r.c=nc; r.trail.push([nx,ny]); if(r.trail.length>420) r.trail.shift(); }
+    if(r.c<r.bc){ r.bc=r.c; r.bx=r.x; r.by=r.y; }
+    r.T*=.9965; if(r.T<.008) r.done=true;
+  }
+}
+function drawRun(r){
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H); ctx.setTransform(1,0,0,1,0,0); ctx.drawImage(base,0,0); ctx.setTransform(dpr,0,0,dpr,0,0);
+  const gold=css("--pyrite"), ink=css("--ink");
+  ctx.lineWidth=1.25; ctx.lineJoin="round";
+  for(let i=1;i<r.trail.length;i++){
+    const a=i/r.trail.length; ctx.strokeStyle=withAlpha(gold,a*.85);
+    ctx.beginPath(); ctx.moveTo(r.trail[i-1][0]*W,r.trail[i-1][1]*H); ctx.lineTo(r.trail[i][0]*W,r.trail[i][1]*H); ctx.stroke();
+  }
+  // best so far: ring
+  ctx.strokeStyle=ink; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(r.bx*W,r.by*H,7,0,Math.PI*2); ctx.stroke();
+  // walker
+  ctx.fillStyle=gold; ctx.beginPath(); ctx.arc(r.x*W,r.y*H,4.5,0,Math.PI*2); ctx.fill();
+  document.getElementById("ro-t").textContent=r.T.toFixed(3);
+  document.getElementById("ro-b").textContent=r.bc.toFixed(3);
+}
+function withAlpha(hex,a){const c=parseColor(hex);return `rgba(${c[0]},${c[1]},${c[2]},${a})`}
+
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let raf=null;
+function start(){
+  cancelAnimationFrame(raf); makeWells(); drawField(); run=newRun();
+  if(reduce){ stepRun(run,5000); drawRun(run); return; }
+  const loop=()=>{ stepRun(run,5); drawRun(run); if(!run.done) raf=requestAnimationFrame(loop); };
+  raf=requestAnimationFrame(loop);
+}
+document.getElementById("replay").addEventListener("click",start);
+let rt; addEventListener("resize",()=>{clearTimeout(rt); rt=setTimeout(drawField,150)});
+start();
+</script>
+</body>
+</html>
